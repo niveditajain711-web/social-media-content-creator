@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 export const metadata = {
   title: "Social Media Generator Web",
@@ -20,6 +21,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 Web editor for templates, captions and exports.
               </p>
             </div>
+            <nav className="flex items-center gap-2">
+              <Link
+                href="/"
+                className="rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-800/60"
+              >
+                Home
+              </Link>
+              <Link
+                href="/editor"
+                className="rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-800/60"
+              >
+                Editor
+              </Link>
+              <Link
+                href="/templates"
+                className="rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-800/60"
+              >
+                Templates
+              </Link>
+            </nav>
           </header>
           <section className="flex-1 rounded-xl border border-slate-800 bg-slate-900/40 p-4">
             {children}
