@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { templates, getTemplateById } from "@/lib/templates/catalog";
 import {
@@ -17,7 +16,6 @@ const CanvasStage = dynamic(
 );
 
 export default function EditorPage() {
-  const router = useRouter();
   const [isHydrated, setIsHydrated] = useState(false);
 
   const state = useEditorStore((s) => s);
@@ -80,10 +78,10 @@ export default function EditorPage() {
         </p>
         <button
           type="button"
-          onClick={() => router.push("/templates")}
+          onClick={() => templates[0] && loadFromTemplate(templates[0])}
           className="rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-sky-400"
         >
-          Browse templates
+          Load first template
         </button>
       </div>
     );
@@ -212,17 +210,29 @@ export default function EditorPage() {
         <div className="flex min-h-[260px] flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900/60 p-3">
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-medium text-slate-200">Templates</p>
-            <button
-              type="button"
-              onClick={() => router.push("/templates")}
-              className="text-[11px] font-medium text-sky-300 hover:underline"
-            >
-              Browse all
-            </button>
           </div>
-          <p className="text-xs text-slate-400">
-            Currently using: <span className="font-medium">{selectedTemplate.name}</span>
-          </p>
+          <div className="max-h-40 space-y-2 overflow-y-auto pr-1">
+            {templates.map((tpl) => {
+              const isActive = tpl.id === selectedTemplate.id;
+              return (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => loadFromTemplate(tpl)}
+                  className={`w-full rounded-md border px-2 py-1.5 text-left text-[11px] ${
+                    isActive
+                      ? "border-sky-500 bg-sky-500/10 text-sky-100"
+                      : "border-slate-700 bg-slate-900 text-slate-200 hover:border-slate-500"
+                  }`}
+                >
+                  <p className="font-medium">{tpl.name}</p>
+                  <p className="text-[10px] text-slate-400">
+                    {tpl.aspectRatio} · {tpl.category}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
 
           <div className="mt-2 space-y-2">
             <p className="text-xs font-medium text-slate-200">Upload photos</p>
